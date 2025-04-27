@@ -1,13 +1,23 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
-import { Code, Server, Database, Cloud, Briefcase, GraduationCap, Heart, Book, Lightbulb } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Code,
+  Server,
+  Database,
+  Cloud,
+  Briefcase,
+  GraduationCap,
+  Heart,
+  Book,
+  Lightbulb,
+} from "lucide-react";
 
 // Experience timeline component
 function ExperienceTimeline() {
@@ -39,7 +49,7 @@ function ExperienceTimeline() {
       icon: <Server className="h-5 w-5" />,
       color: "#8b5cf6",
     },
-  ]
+  ];
 
   return (
     <div className="space-y-8">
@@ -58,19 +68,26 @@ function ExperienceTimeline() {
             } as React.CSSProperties
           }
         >
-          <div className="absolute left-0 top-1 h-4 w-4 rounded-full" style={{ backgroundColor: exp.color }}></div>
+          <div
+            className="absolute left-0 top-1 h-4 w-4 rounded-full"
+            style={{ backgroundColor: exp.color }}
+          ></div>
           <div className="absolute left-[7px] top-6 bottom-0 w-0.5 bg-border"></div>
 
           <div className="mb-1 text-xl font-bold">{exp.title}</div>
           <div className="mb-2 flex items-center text-sm">
-            <span className="font-medium text-muted-foreground">{exp.company}</span>
-            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">{exp.period}</span>
+            <span className="font-medium text-muted-foreground">
+              {exp.company}
+            </span>
+            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">
+              {exp.period}
+            </span>
           </div>
           <p className="text-muted-foreground">{exp.description}</p>
         </motion.div>
       ))}
     </div>
-  )
+  );
 }
 
 // Education timeline component
@@ -89,7 +106,8 @@ function EducationTimeline() {
       degree: "B.S. Computer Science",
       institution: "State University",
       period: "2010 - 2014",
-      description: "Graduated with honors. Focused on software engineering and web development.",
+      description:
+        "Graduated with honors. Focused on software engineering and web development.",
       icon: <Book className="h-5 w-5" />,
       color: "#f59e0b",
     },
@@ -102,7 +120,7 @@ function EducationTimeline() {
       icon: <Lightbulb className="h-5 w-5" />,
       color: "#06b6d4",
     },
-  ]
+  ];
 
   return (
     <div className="space-y-8">
@@ -115,19 +133,26 @@ function EducationTimeline() {
           viewport={{ once: true }}
           className="relative pl-8 before:absolute before:left-0 before:top-1 before:h-4 before:w-4 before:rounded-full before:content-['']"
         >
-          <div className="absolute left-0 top-1 h-4 w-4 rounded-full" style={{ backgroundColor: edu.color }}></div>
+          <div
+            className="absolute left-0 top-1 h-4 w-4 rounded-full"
+            style={{ backgroundColor: edu.color }}
+          ></div>
           <div className="absolute left-[7px] top-6 bottom-0 w-0.5 bg-border"></div>
 
           <div className="mb-1 text-xl font-bold">{edu.degree}</div>
           <div className="mb-2 flex items-center text-sm">
-            <span className="font-medium text-muted-foreground">{edu.institution}</span>
-            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">{edu.period}</span>
+            <span className="font-medium text-muted-foreground">
+              {edu.institution}
+            </span>
+            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">
+              {edu.period}
+            </span>
           </div>
           <p className="text-muted-foreground">{edu.description}</p>
         </motion.div>
       ))}
     </div>
-  )
+  );
 }
 
 // Animated profile image component
@@ -145,8 +170,8 @@ const AnimatedProfileImage = () => {
         <div className="absolute inset-0 rounded-full border-2 border-primary/50"></div>
         <div className="absolute inset-2 rounded-full overflow-hidden bg-card">
           <Image
-            src="/placeholder.svg?height=300&width=300"
-            alt="John Doe"
+            src="/assets/images/me.png"
+            alt="Yodig Nor R"
             width={300}
             height={300}
             className="object-cover"
@@ -157,7 +182,11 @@ const AnimatedProfileImage = () => {
         <motion.div
           className="absolute -top-4 -right-4 bg-card p-2 rounded-full shadow-lg border border-border"
           animate={{ y: [0, -8, 0] }}
-          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
+          transition={{
+            repeat: Number.POSITIVE_INFINITY,
+            duration: 3,
+            ease: "easeInOut",
+          }}
         >
           <Code className="h-6 w-6 text-primary" />
         </motion.div>
@@ -165,7 +194,12 @@ const AnimatedProfileImage = () => {
         <motion.div
           className="absolute -bottom-2 -right-6 bg-card p-2 rounded-full shadow-lg border border-border"
           animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4, ease: "easeInOut", delay: 0.5 }}
+          transition={{
+            repeat: Number.POSITIVE_INFINITY,
+            duration: 4,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
         >
           <Server className="h-6 w-6 text-green-500" />
         </motion.div>
@@ -173,7 +207,12 @@ const AnimatedProfileImage = () => {
         <motion.div
           className="absolute -bottom-6 left-10 bg-card p-2 rounded-full shadow-lg border border-border"
           animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3.5, ease: "easeInOut", delay: 1 }}
+          transition={{
+            repeat: Number.POSITIVE_INFINITY,
+            duration: 3.5,
+            ease: "easeInOut",
+            delay: 1,
+          }}
         >
           <Database className="h-6 w-6 text-purple-500" />
         </motion.div>
@@ -181,17 +220,22 @@ const AnimatedProfileImage = () => {
         <motion.div
           className="absolute -top-2 -left-6 bg-card p-2 rounded-full shadow-lg border border-border"
           animate={{ y: [0, -10, 0] }}
-          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4.5, ease: "easeInOut", delay: 1.5 }}
+          transition={{
+            repeat: Number.POSITIVE_INFINITY,
+            duration: 4.5,
+            ease: "easeInOut",
+            delay: 1.5,
+          }}
         >
           <Cloud className="h-6 w-6 text-blue-400" />
         </motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
 export default function About() {
-  const [activeTab, setActiveTab] = useState("about")
+  const [activeTab, setActiveTab] = useState("about");
 
   return (
     <section id="about" className="py-20 bg-background/80 backdrop-blur-md">
@@ -207,13 +251,18 @@ export default function About() {
             <span className="gradient-text">About Me</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Get to know my background, experience, and approach to software development.
+            Get to know my background, experience, and approach to software
+            development.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="about">About</TabsTrigger>
                 <TabsTrigger value="experience">Experience</TabsTrigger>
@@ -227,9 +276,11 @@ export default function About() {
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
                 >
-                  I'm a passionate Full Stack Developer with over 6 years of experience building web and mobile
-                  applications. My journey in software development started with a curiosity about how websites work,
-                  which led me to pursue formal education in Computer Science.
+                  I'm a passionate Full Stack Developer with over 6 years of
+                  experience building web and mobile applications. My journey in
+                  software development started with a curiosity about how
+                  websites work, which led me to pursue formal education in
+                  Computer Science.
                 </motion.p>
 
                 <motion.p
@@ -238,9 +289,11 @@ export default function About() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  I specialize in creating scalable, user-friendly applications using modern technologies like React,
-                  Node.js, and cloud services. I'm particularly interested in performance optimization, clean
-                  architecture, and creating intuitive user experiences.
+                  I specialize in creating scalable, user-friendly applications
+                  using modern technologies like React, Node.js, and cloud
+                  services. I'm particularly interested in performance
+                  optimization, clean architecture, and creating intuitive user
+                  experiences.
                 </motion.p>
 
                 <motion.p
@@ -249,9 +302,10 @@ export default function About() {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
                 >
-                  When I'm not coding, I enjoy contributing to open-source projects, writing technical articles, and
-                  mentoring aspiring developers. I believe in continuous learning and staying updated with the latest
-                  industry trends.
+                  When I'm not coding, I enjoy contributing to open-source
+                  projects, writing technical articles, and mentoring aspiring
+                  developers. I believe in continuous learning and staying
+                  updated with the latest industry trends.
                 </motion.p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
@@ -341,5 +395,5 @@ export default function About() {
         </div>
       </div>
     </section>
-  )
+  );
 }

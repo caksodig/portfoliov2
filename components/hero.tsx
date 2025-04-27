@@ -19,182 +19,184 @@ const AnimatedBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Set canvas dimensions with device pixel ratio for sharper rendering
-    const setCanvasDimensions = () => {
+    if (typeof window !== "undefined") {
+      const canvas = canvasRef.current;
       if (!canvas) return;
-      const { innerWidth, innerHeight, devicePixelRatio } = window;
-      canvas.width = innerWidth * devicePixelRatio;
-      canvas.height = innerHeight * devicePixelRatio;
-      canvas.style.width = `${innerWidth}px`;
-      canvas.style.height = `${innerHeight}px`;
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-    };
 
-    setCanvasDimensions();
-    window.addEventListener("resize", setCanvasDimensions);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    // Track mouse movement for interactive particles
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
+      // Set canvas dimensions with device pixel ratio for sharper rendering
+      const setCanvasDimensions = () => {
+        if (!canvas) return;
+        const { innerWidth, innerHeight, devicePixelRatio } = window;
+        canvas.width = innerWidth * devicePixelRatio;
+        canvas.height = innerHeight * devicePixelRatio;
+        canvas.style.width = `${innerWidth}px`;
+        canvas.style.height = `${innerHeight}px`;
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+      };
 
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      baseSize: number;
-      speedX: number;
-      speedY: number;
-      color: string;
-      opacity: number;
-      maxOpacity: number;
-      distance: number;
-      maxDistance: number;
+      setCanvasDimensions();
+      window.addEventListener("resize", setCanvasDimensions);
 
-      constructor() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-        this.baseSize = Math.random() * 2 + 0.5;
-        this.size = this.baseSize;
-        this.speedX = (Math.random() - 0.5) * 0.3;
-        this.speedY = (Math.random() - 0.5) * 0.3;
-        this.maxOpacity = Math.random() * 0.5 + 0.2;
-        this.opacity = this.maxOpacity;
-        this.color = `rgba(59, 130, 246, ${this.opacity})`;
-        this.distance = 0;
-        this.maxDistance = 100;
-      }
+      // Track mouse movement for interactive particles
+      const handleMouseMove = (e: MouseEvent) => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      };
+      window.addEventListener("mousemove", handleMouseMove);
 
-      update(mouseX: number, mouseY: number) {
-        this.x += this.speedX;
-        this.y += this.speedY;
+      class Particle {
+        x: number;
+        y: number;
+        size: number;
+        baseSize: number;
+        speedX: number;
+        speedY: number;
+        color: string;
+        opacity: number;
+        maxOpacity: number;
+        distance: number;
+        maxDistance: number;
 
-        // Wrap around edges
-        if (this.x > window.innerWidth) this.x = 0;
-        else if (this.x < 0) this.x = window.innerWidth;
-        if (this.y > window.innerHeight) this.y = 0;
-        else if (this.y < 0) this.y = window.innerHeight;
-
-        // Calculate distance from mouse
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        this.distance = Math.sqrt(dx * dx + dy * dy);
-
-        // Interactive behavior based on mouse position
-        if (this.distance < this.maxDistance) {
-          const force = (this.maxDistance - this.distance) / this.maxDistance;
-          this.size = this.baseSize * (1 + force);
-          this.opacity = this.maxOpacity * (1 + force * 0.5);
-
-          // Gentle push away from cursor
-          const angle = Math.atan2(dy, dx);
-          const pushX = Math.cos(angle) * force * 0.2;
-          const pushY = Math.sin(angle) * force * 0.2;
-
-          this.x -= pushX;
-          this.y -= pushY;
-        } else {
+        constructor() {
+          this.x = Math.random() * window.innerWidth;
+          this.y = Math.random() * window.innerHeight;
+          this.baseSize = Math.random() * 2 + 0.5;
           this.size = this.baseSize;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.maxOpacity = Math.random() * 0.5 + 0.2;
           this.opacity = this.maxOpacity;
+          this.color = `rgba(59, 130, 246, ${this.opacity})`;
+          this.distance = 0;
+          this.maxDistance = 100;
         }
 
-        this.color = `rgba(59, 130, 246, ${this.opacity})`;
+        update(mouseX: number, mouseY: number) {
+          this.x += this.speedX;
+          this.y += this.speedY;
+
+          // Wrap around edges
+          if (this.x > window.innerWidth) this.x = 0;
+          else if (this.x < 0) this.x = window.innerWidth;
+          if (this.y > window.innerHeight) this.y = 0;
+          else if (this.y < 0) this.y = window.innerHeight;
+
+          // Calculate distance from mouse
+          const dx = mouseX - this.x;
+          const dy = mouseY - this.y;
+          this.distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Interactive behavior based on mouse position
+          if (this.distance < this.maxDistance) {
+            const force = (this.maxDistance - this.distance) / this.maxDistance;
+            this.size = this.baseSize * (1 + force);
+            this.opacity = this.maxOpacity * (1 + force * 0.5);
+
+            // Gentle push away from cursor
+            const angle = Math.atan2(dy, dx);
+            const pushX = Math.cos(angle) * force * 0.2;
+            const pushY = Math.sin(angle) * force * 0.2;
+
+            this.x -= pushX;
+            this.y -= pushY;
+          } else {
+            this.size = this.baseSize;
+            this.opacity = this.maxOpacity;
+          }
+
+          this.color = `rgba(59, 130, 246, ${this.opacity})`;
+        }
+
+        draw(ctx: CanvasRenderingContext2D) {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
 
-      draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+      // Create particles with density based on screen size
+      const particles: Particle[] = [];
+      const particleCount = Math.min(
+        120,
+        Math.floor((window.innerWidth * window.innerHeight) / 9000)
+      );
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
       }
-    }
 
-    // Create particles with density based on screen size
-    const particles: Particle[] = [];
-    const particleCount = Math.min(
-      120,
-      Math.floor((window.innerWidth * window.innerHeight) / 9000)
-    );
+      // Connect particles with lines - optimized for performance
+      function connectParticles(ctx: CanvasRenderingContext2D) {
+        const maxDistance = 150;
+        const connections: { p1: Particle; p2: Particle; distance: number }[] =
+          [];
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
+        // First pass: collect valid connections
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Connect particles with lines - optimized for performance
-    function connectParticles(ctx: CanvasRenderingContext2D) {
-      const maxDistance = 150;
-      const connections: { p1: Particle; p2: Particle; distance: number }[] =
-        [];
-
-      // First pass: collect valid connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < maxDistance) {
-            connections.push({
-              p1: particles[i],
-              p2: particles[j],
-              distance,
-            });
+            if (distance < maxDistance) {
+              connections.push({
+                p1: particles[i],
+                p2: particles[j],
+                distance,
+              });
+            }
           }
         }
+
+        // Second pass: draw connections
+        ctx.lineWidth = 0.5;
+        for (const conn of connections) {
+          const opacity = 1 - conn.distance / maxDistance;
+          ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.2})`;
+          ctx.beginPath();
+          ctx.moveTo(conn.p1.x, conn.p1.y);
+          ctx.lineTo(conn.p2.x, conn.p2.y);
+          ctx.stroke();
+        }
       }
 
-      // Second pass: draw connections
-      ctx.lineWidth = 0.5;
-      for (const conn of connections) {
-        const opacity = 1 - conn.distance / maxDistance;
-        ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.2})`;
-        ctx.beginPath();
-        ctx.moveTo(conn.p1.x, conn.p1.y);
-        ctx.lineTo(conn.p2.x, conn.p2.y);
-        ctx.stroke();
+      // Animation loop with performance optimizations
+      let animationFrameId: number;
+      let lastTime = 0;
+      const fps = 30;
+      const interval = 1000 / fps;
+
+      function animate(currentTime: number) {
+        animationFrameId = requestAnimationFrame(animate);
+
+        // Throttle frame rate for performance
+        const delta = currentTime - lastTime;
+        if (delta < interval) return;
+
+        lastTime = currentTime - (delta % interval);
+
+        if (!ctx || !canvas) return;
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        particles.forEach((particle) => {
+          particle.update(mousePosition.x, mousePosition.y);
+          particle.draw(ctx);
+        });
+
+        connectParticles(ctx);
       }
-    }
 
-    // Animation loop with performance optimizations
-    let animationFrameId: number;
-    let lastTime = 0;
-    const fps = 30;
-    const interval = 1000 / fps;
-
-    function animate(currentTime: number) {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Throttle frame rate for performance
-      const delta = currentTime - lastTime;
-      if (delta < interval) return;
-
-      lastTime = currentTime - (delta % interval);
-
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      particles.forEach((particle) => {
-        particle.update(mousePosition.x, mousePosition.y);
-        particle.draw(ctx);
-      });
-
-      connectParticles(ctx);
+      return () => {
+        window.removeEventListener("resize", setCanvasDimensions);
+        window.removeEventListener("mousemove", handleMouseMove);
+        cancelAnimationFrame(animationFrameId);
+      };
     }
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      window.removeEventListener("resize", setCanvasDimensions);
-      window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
-    };
   }, []);
 
   return <canvas ref={canvasRef} className="absolute inset-0 z-0" />;
@@ -355,6 +357,7 @@ const AnimatedCodeSnippet = () => {
 
 // Floating tech badges component
 const FloatingTechBadges = () => {
+  const [mounted, setMounted] = useState(false);
   const badges = [
     { name: "React", delay: 0, color: "#61DAFB" },
     { name: "Node.js", delay: 0.2, color: "#339933" },
@@ -362,6 +365,14 @@ const FloatingTechBadges = () => {
     { name: "Next.js", delay: 0.6, color: "#000000" },
     { name: "Tailwind", delay: 0.8, color: "#06B6D4" },
   ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
